@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Crypto Pulse Arena is an interactive crypto sentiment game."
+    />
+    <title>Crypto Pulse Arena</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <canvas id="pulse-canvas" aria-hidden="true"></canvas>
+
+    <header class="topbar">
+      <a class="brand" href="#arena" aria-label="Crypto Pulse Arena">
+        <span class="brand-mark">CP</span>
+        <span>Crypto Pulse Arena</span>
+      </a>
+      <div class="top-actions">
+        <div class="status-pill" id="market-clock">00:00:00 UTC</div>
+        <div class="status-pill"><span data-i18n="bankroll">Points</span> <b id="top-balance">1,000</b></div>
+        <label class="language-control">
+          <span data-i18n="language">Language</span>
+          <select id="language-select" aria-label="Language">
+            <option value="en">EN</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <main id="arena" class="shell">
+      <section class="hero-grid" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow" data-i18n="eyebrow">Educational market sentiment lab</p>
+          <h1 id="hero-title" data-i18n="headline">Explore market cycles.</h1>
+          <p class="lede" data-i18n="lede">
+            Read neutral signals, compare narratives, and complete short simulation rounds for learning points.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-action" href="#scenario" data-i18n="start">Start Lab</a>
+            <button class="ghost-action" id="shuffle-btn" type="button" data-i18n="shuffle">
+              Refresh Signals
+            </button>
+          </div>
+        </div>
+
+        <section class="hero-dashboard" aria-label="Account status">
+          <div class="rank-card">
+            <span data-i18n="rank">Rank</span>
+            <strong id="rank-label">Signal Rookie</strong>
+            <div class="xp-track"><span id="xp-bar"></span></div>
+            <small><span id="xp-value">0</span>/<span id="xp-next">80</span> XP</small>
+          </div>
+          <div class="score-grid">
+            <div>
+              <span data-i18n="round">Round</span>
+              <strong id="round-count">1</strong>
+            </div>
+            <div>
+              <span data-i18n="streak">Streak</span>
+              <strong id="streak-count">0</strong>
+            </div>
+            <div>
+              <span data-i18n="pulse">Pulse</span>
+              <strong id="pulse-index">59</strong>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="mission-band" aria-labelledby="missions-title">
+        <div>
+          <p class="eyebrow" data-i18n="missionsEyebrow">Learning goals</p>
+          <h2 id="missions-title" data-i18n="missionsTitle">Complete neutral analysis tasks</h2>
+        </div>
+        <div class="missions" id="mission-list"></div>
+      </section>
+
+      <section class="command-grid">
+        <section class="radar-panel" aria-labelledby="radar-title">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" data-i18n="radarEyebrow">Narrative radar</p>
+              <h2 id="radar-title" data-i18n="radarTitle">Choose a topic to inspect</h2>
+            </div>
+            <span class="signal-pill" id="selected-tier">HOT</span>
+          </div>
+          <div class="radar" id="radar" aria-label="Crypto narrative radar"></div>
+        </section>
+
+        <section class="scenario-panel" id="scenario" aria-labelledby="scenario-title">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" data-i18n="scenarioEyebrow">Scenario panel</p>
+              <h2 id="scenario-title" data-i18n="scenarioTitle">Set your confidence</h2>
+            </div>
+            <span class="signal-pill"><span id="selected-name">BTC</span> <b id="selected-score">63</b></span>
+          </div>
+
+          <div class="metric-stack">
+            <div class="metric-row">
+              <span data-i18n="momentum">Momentum</span>
+              <meter id="metric-momentum" min="0" max="100" value="70"></meter>
+              <strong id="metric-momentum-value">70</strong>
+            </div>
+            <div class="metric-row">
+              <span data-i18n="social">Social</span>
+              <meter id="metric-social" min="0" max="100" value="60"></meter>
+              <strong id="metric-social-value">60</strong>
+            </div>
+            <div class="metric-row">
+              <span data-i18n="volatility">Volatility</span>
+              <meter id="metric-volatility" min="0" max="100" value="40"></meter>
+              <strong id="metric-volatility-value">40</strong>
+            </div>
+            <div class="metric-row">
+              <span data-i18n="whales">Large-flow signal</span>
+              <meter id="metric-whaleFlow" min="0" max="100" value="65"></meter>
+              <strong id="metric-whaleFlow-value">65</strong>
+            </div>
+          </div>
+
+          <div class="control-grid">
+            <label class="slider-control">
+              <span><span data-i18n="budget">Point budget</span> <b id="budget-value">120</b></span>
+              <input id="budget-slider" type="range" min="40" max="300" value="120" step="20" />
+            </label>
+            <div class="segmented" aria-label="Leverage">
+              <button type="button" class="lev-button is-active" data-lev="1" data-i18n="confidenceLow">Low</button>
+              <button type="button" class="lev-button" data-lev="3" data-i18n="confidenceMid">Mid</button>
+              <button type="button" class="lev-button" data-lev="5" data-i18n="confidenceHigh">High</button>
+            </div>
+          </div>
+
+          <div class="direction-grid">
+            <button id="bull-btn" type="button" class="direction-button bull" data-direction="bull">
+              <span data-i18n="bull">Expansion</span>
+              <small data-i18n="bullHint">Signal improves</small>
+            </button>
+            <button id="bear-btn" type="button" class="direction-button bear" data-direction="bear">
+              <span data-i18n="bear">Cooling</span>
+              <small data-i18n="bearHint">Signal cools</small>
+            </button>
+          </div>
+
+          <button id="execute-btn" type="button" class="execute-button" data-i18n="execute">
+            Run Simulation
+          </button>
+          <div class="result-strip" id="round-result" data-i18n="roundHint">
+            Choose a scenario and run the learning simulation.
+          </div>
+        </section>
+      </section>
+
+      <section class="intel-grid">
+        <section class="chart-panel" aria-labelledby="chart-title">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" data-i18n="chartEyebrow">Pulse path</p>
+              <h2 id="chart-title" data-i18n="chartTitle">Scenario replay</h2>
+            </div>
+          </div>
+          <canvas id="chart-canvas" width="720" height="260" aria-label="Round replay chart"></canvas>
+        </section>
+
+        <section class="alerts-panel" aria-labelledby="alerts-title">
+          <p class="eyebrow" data-i18n="alertsEyebrow">Signal notes</p>
+          <h2 id="alerts-title" data-i18n="alertsTitle">Educational observations</h2>
+          <ul id="alerts-list" class="alerts-list"></ul>
+        </section>
+
+        <section class="timeline-panel" aria-labelledby="timeline-title">
+          <p class="eyebrow" data-i18n="timelineEyebrow">Session log</p>
+          <h2 id="timeline-title" data-i18n="timelineTitle">Recent simulations</h2>
+          <ol id="timeline-list" class="timeline-list"></ol>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer" data-i18n="disclaimer">
+      Educational simulation only. No financial advice, no real-money transactions, and no promise of results.
+    </footer>
+
+    <script type="module" src="./src/app.mjs"></script>
+  </body>
+</html>
